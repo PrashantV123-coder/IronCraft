@@ -52,6 +52,7 @@ const YourServices = () => {
                 <img
                   src={data.url}
                   alt={type}
+                  loading="lazy"
                   className="w-full h-72 object-cover cursor-pointer group-hover:scale-105 transition duration-300"
                 />
               </div>

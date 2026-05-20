@@ -23,6 +23,7 @@ const AdminStart = () => {
             <img
               src={logo}
               alt="Logo"
+              loading="lazy"
               className="w-24 sm:w-32 lg:w-36 h-auto"
             />
 
@@ -87,6 +88,7 @@ const AdminStart = () => {
                 <img
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
                   src={Shutter}
+                  loading="lazy"
                   alt="Shutter"
                 />
                 <h3 className="mt-2 text-base sm:text-lg font-medium">
@@ -98,6 +100,7 @@ const AdminStart = () => {
                 <img
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
                   src={Grill}
+                  loading="lazy"
                   alt="Grill"
                 />
                 <h3 className="mt-2 text-base sm:text-lg font-medium">Grill</h3>
@@ -107,6 +110,7 @@ const AdminStart = () => {
                 <img
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
                   src={Gate}
+                  loading="lazy"
                   alt="Gate"
                 />
                 <h3 className="mt-2 text-base sm:text-lg font-medium">Gate</h3>
@@ -116,6 +120,7 @@ const AdminStart = () => {
                 <img
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
                   src={Window}
+                  loading="lazy"
                   alt="Window"
                 />
                 <h3 className="mt-2 text-base sm:text-lg font-medium">
@@ -127,6 +132,7 @@ const AdminStart = () => {
                 <img
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
                   src={Ladder}
+                  loading="lazy"
                   alt="Ladder"
                 />
                 <h3 className="mt-2 text-base sm:text-lg font-medium">
@@ -138,6 +144,7 @@ const AdminStart = () => {
                 <img
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
                   src={welding}
+                  loading="lazy"
                   alt="Welding"
                 />
                 <h3 className="mt-2 text-base sm:text-lg font-medium">
@@ -149,6 +156,7 @@ const AdminStart = () => {
                 <img
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
                   src={cutting}
+                  loading="lazy"
                   alt="Cutting"
                 />
                 <h3 className="mt-2 text-base sm:text-lg font-medium">

@@ -68,6 +68,7 @@ const MyOrders = () => {
               <img
                 src={order.selectedImage}
                 alt="design"
+                loading="lazy"
                 className="w-40 h-40 object-cover rounded-xl"
               />
             </div>

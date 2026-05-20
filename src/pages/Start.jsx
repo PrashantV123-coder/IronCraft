@@ -69,6 +69,7 @@ const Start = () => {
                 <img
                   className="w-40 h-40 object-cover rounded-lg"
                   src={Shutter}
+                  loading="lazy"
                   alt="Shutter"
                 />
                 <h3 className="mt-2 text-lg font-medium">Shutter</h3>
@@ -78,6 +79,7 @@ const Start = () => {
                 <img
                   className="w-40 h-40 object-cover rounded-lg"
                   src={Grill}
+                  loading="lazy"
                   alt="Grill"
                 />
                 <h3 className="mt-2 text-lg font-medium">Grill</h3>
@@ -87,6 +89,7 @@ const Start = () => {
                 <img
                   className="w-40 h-40 object-cover rounded-lg"
                   src={Gate}
+                  loading="lazy"
                   alt="Gate"
                 />
                 <h3 className="mt-2 text-lg font-medium">Gate</h3>
@@ -96,6 +99,7 @@ const Start = () => {
                 <img
                   className="w-40 h-40 object-cover rounded-lg"
                   src={Window}
+                  loading="lazy"
                   alt="Window"
                 />
                 <h3 className="mt-2 text-lg font-medium">Window</h3>
@@ -105,6 +109,7 @@ const Start = () => {
                 <img
                   className="w-40 h-40 object-cover rounded-lg"
                   src={Ladder}
+                  loading="lazy"
                   alt="Ladder"
                 />
                 <h3 className="mt-2 text-lg font-medium">Ladder</h3>
@@ -114,6 +119,7 @@ const Start = () => {
                 <img
                   className="w-40 h-40 object-cover rounded-lg"
                   src={welding}
+                  loading="lazy"
                   alt="Welding"
                 />
                 <h3 className="mt-2 text-lg font-medium">Welding</h3>
@@ -123,6 +129,7 @@ const Start = () => {
                 <img
                   className="w-40 h-40 object-cover rounded-lg"
                   src={cutting}
+                  loading="lazy"
                   alt="Cutting"
                 />
                 <h3 className="mt-2 text-lg font-medium">Cutting</h3>

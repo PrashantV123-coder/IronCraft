@@ -310,44 +310,7 @@ const OrderService = () => {
                 <p className="text-red-500 text-xs">{err.size}</p>
               )}
             </div>
-
-            {/* <div className="p-5 ">
-              <button
-                type="button"
-                onClick={() => setShowImages(!showImages)}
-                className="bg-blue-500 text-white px-4 py-2 ml-20 rounded"
-              >
-                Choose Design
-              </button>
-
-              {showImages && (
-                <div className="grid grid-cols-3 gap-4 mt-4">
-                  {imageUrls.map((url, index) => (
-                    <img
-                      key={index}
-                      src={url}
-                      alt="option"
-                      onClick={() => handleSelect(url)}
-                      className="w-32 h-32 object-cover cursor-pointer border-4 hover:border-blue-500"
-                    />
-                  ))}
-                </div>
-              )}
-
-              {input.selectedImage && (
-                <div className="mt-5 ml-18">
-                  <h3 className="text-sm font-semibold mb-2">
-                    Selected Image:
-                  </h3>
-
-                  <img
-                    src={input.selectedImage}
-                    alt="selected"
-                    className="w-40 h-40 object-cover rounded-md"
-                  />
-                </div>
-              )}
-            </div> */}
+            
 
             <div className="flex items-center justify-between ml-33">
               <button
