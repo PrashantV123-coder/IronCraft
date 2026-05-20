@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import UserHeader from "../components/UserHeader";
-import Footer from "../components/Footer";
+import React, { useEffect, lazy } from "react";
+const UserHeader = lazy(() => import("../components/UserHeader"));
+const Footer = lazy(() => import("../components/Footer"));
 import { Link } from "react-router-dom";
 import { getOrders } from "../features/orderSlice";
 import { useDispatch, useSelector } from "react-redux";

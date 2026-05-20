@@ -1,9 +1,10 @@
-import React from "react";
-import UserHeader from "../components/UserHeader";
-import Footer from "../components/Footer";
+import React, {lazy} from "react";
+const UserHeader = lazy(() => import("../components/UserHeader"));
+const Footer = lazy(() => import("../components/Footer"));
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import OrderService from "./OrderService";
+import { lazy } from "react";
 const GrillProducts = () => {
   const imageUrls = useSelector((state) => state.design.urls.grill || {});
 

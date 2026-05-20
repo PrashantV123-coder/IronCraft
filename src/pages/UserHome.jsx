@@ -1,6 +1,6 @@
-import React from "react";
-import UserHeader from "../components/UserHeader";
-import Footer from "../components/Footer";
+import React, {lazy} from "react";
+const UserHeader = lazy(() => import("../components/UserHeader"));
+const Footer = lazy(() => import("../components/Footer"));
 
 import Shutter from "../assets/shutters.webp";
 import Grill from "../assets/grills.webp";

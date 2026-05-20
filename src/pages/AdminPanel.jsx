@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import AdminHeader from "../components/AdminHeader";
-import Footer from "../components/Footer";
+import React, { useEffect, useState, lazy } from "react";
+const AdminHeader = lazy(() => import("../components/AdminHeader"));
+const Footer = lazy(() => import("../components/Footer"));
 import { Link } from "react-router-dom";
 import { getAdminProfile } from "../features/profileSlice";
 import { setSlot, getSlot, removeSlot } from "../features/slotTimingSlice";

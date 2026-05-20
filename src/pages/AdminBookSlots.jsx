@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import AdminHeader from "../components/AdminHeader";
-import Footer from "../components/Footer";
+import React, { useEffect, lazy } from "react";
+const AdminHeader = lazy(() => import("../components/AdminHeader"));
+const Footer = lazy(() => import("../components/Footer"));
 import { Link } from "react-router-dom";
 import { getBookSlot, updateBookSlotStatus, removeBookSlot } from "../features/bookSlotSlice"; 
 import { useDispatch, useSelector } from "react-redux";

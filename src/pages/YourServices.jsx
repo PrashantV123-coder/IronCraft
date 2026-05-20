@@ -1,6 +1,6 @@
-import React from "react";
-import UserHeader from "../components/UserHeader";
-import Footer from "../components/Footer";
+import React, {lazy} from "react";
+const UserHeader = lazy(() => import("../components/UserHeader"));
+const Footer = lazy(() => import("../components/Footer"));
 import { useSelector, useDispatch } from "react-redux";
 import { removeProducts } from "../features/designSlice";
 import { data, Link } from "react-router-dom";
