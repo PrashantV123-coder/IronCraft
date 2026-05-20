@@ -15,23 +15,27 @@ const UserHome = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <UserHeader />
-      <div className="bg-gray-100 w-auto h-screen">
-        <h2 className="text-blue-600 text-2xl font-semibold mt-2 ml-140 mb-6">
+
+      <div className="bg-gray-100 flex-1 px-4 sm:px-6 lg:px-10 py-6">
+        {/* Custom Services */}
+        <h2 className="text-blue-600 text-2xl sm:text-3xl font-semibold text-center mb-6">
           Order Custom Services
         </h2>
-        <div className="flex flex-wrap mt-4 items-center justify-center gap-12">
+
+        <div className="flex flex-wrap justify-center items-center gap-5 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
           <div
             className="flex flex-col items-center cursor-pointer"
             onClick={() => navigate("/shutter-products")}
           >
             <img
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
               src={Shutter}
               alt="Shutter"
             />
-            <h3 className="mt-2 text-lg font-medium ">Shutter</h3>
+
+            <h3 className="mt-2 text-base sm:text-lg font-medium">Shutter</h3>
           </div>
 
           <div
@@ -39,11 +43,12 @@ const UserHome = () => {
             onClick={() => navigate("/grill-products")}
           >
             <img
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
               src={Grill}
               alt="Grill"
             />
-            <h3 className="mt-2 text-lg font-medium">Grill</h3>
+
+            <h3 className="mt-2 text-base sm:text-lg font-medium">Grill</h3>
           </div>
 
           <div
@@ -51,11 +56,12 @@ const UserHome = () => {
             onClick={() => navigate("/gate-products")}
           >
             <img
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
               src={Gate}
               alt="Gate"
             />
-            <h3 className="mt-2 text-lg font-medium">Gate</h3>
+
+            <h3 className="mt-2 text-base sm:text-lg font-medium">Gate</h3>
           </div>
 
           <div
@@ -63,11 +69,12 @@ const UserHome = () => {
             onClick={() => navigate("/window-products")}
           >
             <img
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
               src={Window}
               alt="Window"
             />
-            <h3 className="mt-2 text-lg font-medium">Window</h3>
+
+            <h3 className="mt-2 text-base sm:text-lg font-medium">Window</h3>
           </div>
 
           <div
@@ -75,28 +82,32 @@ const UserHome = () => {
             onClick={() => navigate("/ladder-products")}
           >
             <img
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
               src={Ladder}
               alt="Ladder"
             />
-            <h3 className="mt-2 text-lg font-medium">Ladder</h3>
+
+            <h3 className="mt-2 text-base sm:text-lg font-medium">Ladder</h3>
           </div>
         </div>
 
-        <h2 className="text-rose-500 text-2xl font-semibold ml-140 mt-14 mb-6">
+        {/* Maintenance */}
+        <h2 className="text-rose-500 text-2xl sm:text-3xl font-semibold text-center mt-10 mb-6">
           Book for Maintenance
         </h2>
-        <div className="flex flex-wrap mt-4 items-center justify-center gap-12">
+
+        <div className="flex flex-wrap justify-center items-center gap-5 sm:gap-6">
           <div
             className="flex flex-col items-center cursor-pointer"
             onClick={() => navigate("/welding-types")}
           >
             <img
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
               src={welding}
               alt="Welding"
             />
-            <h3 className="mt-2 text-lg font-medium">Welding</h3>
+
+            <h3 className="mt-2 text-base sm:text-lg font-medium">Welding</h3>
           </div>
 
           <div
@@ -104,19 +115,35 @@ const UserHome = () => {
             onClick={() => navigate("/other-services")}
           >
             <img
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
               src={cutting}
               alt="Cutting"
             />
-            <h3 className="mt-2 text-lg font-medium">Other Services</h3>
+
+            <h3 className="mt-2 text-base sm:text-lg font-medium">
+              Other Services
+            </h3>
           </div>
         </div>
 
-        <div className="ml-140 mt-15 flex items-center gap-5">
-          <Link to="/my-orders" className="bg-yellow-500 hover:bg-yellow-600 rounded-md px-5 py-2">Orders</Link>
-          <Link to="/booked-slots" className="bg-blue-500 hover:bg-blue-600 rounded-md px-5 py-2">Booked Slots</Link>
+        {/* Buttons */}
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            to="/my-orders"
+            className="bg-yellow-500 hover:bg-yellow-600 rounded-md px-5 py-2 w-full sm:w-auto text-center"
+          >
+            Orders
+          </Link>
+
+          <Link
+            to="/booked-slots"
+            className="bg-blue-500 hover:bg-blue-600 rounded-md px-5 py-2 w-full sm:w-auto text-center"
+          >
+            Booked Slots
+          </Link>
         </div>
       </div>
+
       <Footer />
     </div>
   );
