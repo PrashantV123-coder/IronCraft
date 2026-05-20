@@ -154,18 +154,19 @@ const ListServices = () => {
   };
 
   return (
-    <div className="bg-gray-200 min-h-screen flex items-center justify-center p-10">
-      <div className="bg-white rounded-2xl shadow-xl flex flex-col lg:flex-row overflow-hidden w-1/2 max-w-6xl">
-        <div className="lg:w-full p-6">
+    <div className="bg-gray-200 min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10">
+      <div className="bg-white rounded-2xl shadow-xl flex flex-col lg:flex-row overflow-hidden w-full max-w-4xl">
+        <div className="w-full p-4 sm:p-6">
           <form
             onSubmit={handleSubmit}
-            className="max-w-full mx-auto bg-white p-6 rounded-lg shadow-md"
+            className="w-full mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md"
           >
-            <div className="flex flex-row justify-between">
-              <h1 className="text-xl font-semibold mb-4">List Product</h1>
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <h1 className="text-lg sm:text-xl font-semibold">List Service</h1>
+
               <div
                 onClick={() => navigate("/user-home")}
-                className="w-6 h-6 flex items-center justify-center cursor-pointer"
+                className="w-6 h-6 flex items-center justify-center cursor-pointer text-sm sm:text-base"
               >
                 ❌
               </div>
@@ -178,16 +179,18 @@ const ListServices = () => {
               >
                 Service Name
               </label>
+
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="productname"
                 name="productname"
                 value={input.productname}
-                type="productname"
+                type="text"
                 placeholder="Service Name"
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
+
               {touched.productname && err.productname && (
                 <p className="text-red-500 text-xs">{err.productname}</p>
               )}
@@ -200,6 +203,7 @@ const ListServices = () => {
               >
                 Image URL
               </label>
+
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="url"
@@ -210,6 +214,7 @@ const ListServices = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
+
               {touched.url && err.url && (
                 <p className="text-red-500 text-xs">{err.url}</p>
               )}
@@ -232,6 +237,7 @@ const ListServices = () => {
                 className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
               >
                 <option value="">Choose Category</option>
+
                 {products.map((item, index) => (
                   <option key={index} value={item}>
                     {item}
@@ -251,16 +257,18 @@ const ListServices = () => {
               >
                 Service Description
               </label>
+
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="description"
                 name="description"
                 value={input.description}
-                type="description"
+                type="text"
                 placeholder="description"
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
+
               {touched.description && err.description && (
                 <p className="text-red-500 text-xs">{err.description}</p>
               )}
@@ -273,62 +281,26 @@ const ListServices = () => {
               >
                 Service Uses
               </label>
+
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="uses"
                 name="uses"
                 value={input.uses}
-                type="uses"
+                type="text"
                 placeholder="Service uses"
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
+
               {touched.uses && err.uses && (
                 <p className="text-red-500 text-xs">{err.uses}</p>
               )}
             </div>
 
-            {/* <div className="p-5 ">
-               <button
-                 type="button"
-                 onClick={() => setShowImages(!showImages)}
-                 className="bg-blue-500 text-white px-4 py-2 ml-20 rounded"
-               >
-                 Choose Design
-               </button>
- 
-               {showImages && (
-                 <div className="grid grid-cols-3 gap-4 mt-4">
-                   {imageUrls.map((url, index) => (
-                     <img
-                       key={index}
-                       src={url}
-                       alt="option"
-                       onClick={() => handleSelect(url)}
-                       className="w-32 h-32 object-cover cursor-pointer border-4 hover:border-blue-500"
-                     />
-                   ))}
-                 </div>
-               )}
- 
-               {input.selectedImage && (
-                 <div className="mt-5 ml-18">
-                   <h3 className="text-sm font-semibold mb-2">
-                     Selected Image:
-                   </h3>
- 
-                   <img
-                     src={input.selectedImage}
-                     alt="selected"
-                     className="w-40 h-40 object-cover rounded-md"
-                   />
-                 </div>
-               )}
-             </div> */}
-
-            <div className="flex items-center justify-center mt-10">
+            <div className="flex items-center justify-center mt-8 sm:mt-10">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline text-sm sm:text-base"
                 type="submit"
               >
                 Submit
