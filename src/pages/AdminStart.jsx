@@ -19,18 +19,22 @@ const AdminStart = () => {
       <header className="bg-white shadow-md px-4 sm:px-6 lg:px-8 py-4 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
           {/* Left Section */}
-          <div className="flex items-center gap-4">
-            <img src={logo} alt="Logo" className="w-28 sm:w-36 h-auto" />
+          <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full lg:w-auto">
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-24 sm:w-32 lg:w-36 h-auto"
+            />
 
             <div>
-              <h1 className="text-2xl font-bold text-gray-800"></h1>
-              <p className="text-sm text-gray-500"></p>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-800"></h1>
+              <p className="text-xs sm:text-sm text-gray-500"></p>
             </div>
           </div>
 
           {/* Center Section */}
-          <div className="text-center">
-            <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+          <div className="text-center px-2">
+            <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
               Build-Deliver-Grow
             </h1>
 
@@ -40,10 +44,10 @@ const AdminStart = () => {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center w-full lg:w-auto">
             <Link
               to="/admin-login"
-              className="bg-black text-white px-4 sm:px-5 py-2 rounded-lg hover:bg-gray-800 transition text-sm sm:text-base"
+              className="bg-black text-white px-4 sm:px-5 py-2 rounded-lg hover:bg-gray-800 transition text-sm sm:text-base w-full sm:w-auto text-center"
             >
               Get Started
             </Link>
