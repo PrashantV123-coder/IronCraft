@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/IronCraftLogo.png";
-import Shutter from "../assets/shutters.png";
-import Grill from "../assets/grills.png";
-import Gate from "../assets/gate.png";
-import Window from "../assets/window.png";
-import Ladder from "../assets/ladders.avif";
-import welding from "../assets/welding.png";
-import cutting from "../assets/cutting.png";
+import logo from "../assets/IronCraftLogo.webp";
+import Shutter from "../assets/shutters.webp";
+import Grill from "../assets/grills.webp";
+import Gate from "../assets/gate.webp";
+import Window from "../assets/window.webp";
+import Ladder from "../assets/ladders.webp";
+import welding from "../assets/welding.webp";
+import cutting from "../assets/cutting.webp";
 import Header from "../components/UserHeader";
 import Footer from "../components/Footer";
 

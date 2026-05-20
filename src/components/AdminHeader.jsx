@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAdminProfile } from "../features/profileSlice";
-import logo from "../assets/IronCraftLogo.png";
+import logo from "../assets/IronCraftLogo.webp";
 import { useNavigate } from "react-router-dom";
 
 const AdminHeader = () => {

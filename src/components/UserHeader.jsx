@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../features/profileSlice";
-import logo from "../assets/IronCraftLogo.png";
+import logo from "../assets/IronCraftLogo.webp";
 import { Link, useNavigate } from "react-router-dom";
 
 const UserHeader = () => {
