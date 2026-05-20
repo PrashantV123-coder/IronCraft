@@ -1,14 +1,15 @@
-import React, {lazy} from "react";
+import React, { lazy, useCallback } from "react";
 const UserHeader = lazy(() => import("../components/UserHeader"));
 const Footer = lazy(() => import("../components/Footer"));
 import { useSelector, useDispatch } from "react-redux";
 import { removeProducts } from "../features/designSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OrderService from "./OrderService";
 import AdminHeader from "../components/AdminHeader";
 
 const YourProducts = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const gate = useSelector((state) => state.design.urls.gate || {});
   const shutter = useSelector((state) => state.design.urls.shutter || {});
@@ -30,6 +31,19 @@ const YourProducts = () => {
       type,
       data,
     })),
+  );
+
+  const handleEdit = useCallback(
+    (category, type, data) => {
+      navigate("/edit-listed-product", {
+        state: {
+          category,
+          productName: type,
+          productData: data,
+        },
+      });
+    },
+    [navigate],
   );
 
   return (
@@ -70,17 +84,12 @@ const YourProducts = () => {
               </div>
 
               <div className="flex items-center justify-between p-4">
-                <Link
+                <button
                   className="bg-rose-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-500 transition cursor-pointer"
-                  to="/edit-listed-product"
-                  state={{
-                    category: category,
-                    productName: type,
-                    productData: data,
-                  }}
+                  onClick={() => handleEdit(category, type, data)}
                 >
                   Edit
-                </Link>
+                </button>
 
                 <button
                   className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-500 transition cursor-pointer"
