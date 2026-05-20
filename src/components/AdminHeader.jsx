@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAdminProfile } from "../features/profileSlice";
 import logo from "../assets/IronCraftLogo.webp";
@@ -80,4 +80,4 @@ const AdminHeader = () => {
   );
 };
 
-export default AdminHeader;
+export default memo(AdminHeader);

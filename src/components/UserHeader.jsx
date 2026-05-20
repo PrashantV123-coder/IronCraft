@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../features/profileSlice";
 import logo from "../assets/IronCraftLogo.webp";
@@ -64,4 +64,4 @@ const UserHeader = () => {
   );
 };
 
-export default UserHeader;
+export default memo(UserHeader);
