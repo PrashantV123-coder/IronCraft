@@ -31,7 +31,6 @@ const YourProducts = () => {
       data,
     })),
   );
-  console.log(services);
 
   return (
     <div className="">

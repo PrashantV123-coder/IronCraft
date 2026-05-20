@@ -179,7 +179,7 @@ const AdminPanel = () => {
 
               <button
                 type="submit"
-                className="bg-blue-500 w-1/4 text-white py-2 rounded cursor-pointer"
+                className="bg-blue-500 w-full sm:w-1/2 lg:w-1/4 text-white py-2 rounded cursor-pointer"
               >
                 Save/Update
               </button>
