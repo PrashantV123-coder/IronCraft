@@ -4,7 +4,6 @@ const Footer = lazy(() => import("../components/Footer"));
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import OrderService from "./OrderService";
-import { lazy } from "react";
 const GrillProducts = () => {
   const imageUrls = useSelector((state) => state.design.urls.grill || {});
 
