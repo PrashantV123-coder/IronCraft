@@ -1,7 +1,12 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../features/profileSlice";
 
 const UserRegister = () => {
+  const dispatch = useDispatch();
+
   const [input, setInput] = useState({
     name: "",
     email: "",
@@ -17,7 +22,6 @@ const UserRegister = () => {
   const [err, setErr] = useState({});
 
   const navigate = useNavigate();
-
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -77,7 +81,7 @@ const UserRegister = () => {
     }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const validationErrors = validate(input);
@@ -87,10 +91,31 @@ const UserRegister = () => {
       return;
     }
 
-    localStorage.setItem("user", JSON.stringify(input));
-    localStorage.setItem("userLoggedIn", "true");
-    navigate("/user-home");
-  }; 
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/register`,
+        input,
+      );
+
+      if (response.status === 201) {
+        const data = response.data;
+
+        // if backend sends token
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+
+        // save user in redux
+        dispatch(updateUser(data.user));
+
+        // localStorage.setItem("user", JSON.stringify(data.user));
+
+        navigate("/user-home");
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || "Something went wrong");
+    }
+  };
 
   return (
     <div className="bg-gray-300 w-full h-screen flex items-center justify-center">
@@ -126,7 +151,9 @@ const UserRegister = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {touched.name && err.name && <p className="text-red-500 text-xs">{err.name}</p>}
+            {touched.name && err.name && (
+              <p className="text-red-500 text-xs">{err.name}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -145,7 +172,9 @@ const UserRegister = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {touched.email && err.email && <p className="text-red-500 text-xs">{err.email}</p>}
+            {touched.email && err.email && (
+              <p className="text-red-500 text-xs">{err.email}</p>
+            )}
           </div>
           <div className="mb-4">
             <label

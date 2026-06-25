@@ -3,7 +3,7 @@ const AdminHeader = lazy(() => import("../components/AdminHeader"));
 const Footer = lazy(() => import("../components/Footer"));
 import { Link } from "react-router-dom";
 import { getAdminProfile } from "../features/profileSlice";
-import { setSlot, getSlot, removeSlot } from "../features/slotTimingSlice";
+import { saveSlot, fetchSlot, deleteSlot } from "../features/slotTimingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import sweetAlert from "sweetalert2";
 
@@ -36,7 +36,7 @@ const AdminPanel = () => {
       return;
     }
 
-    dispatch(setSlot(slotData));
+    dispatch(saveSlot(slotData));
 
     await sweetAlert.fire({
       icon: "success",
@@ -53,12 +53,14 @@ const AdminPanel = () => {
   };
 
   useEffect(() => {
-    dispatch(getAdminProfile());
-    dispatch(getSlot());
-  }, []);
+    // dispatch(getAdminProfile());
+    dispatch(fetchSlot());
+  }, [dispatch]);
 
   const adminData = useSelector((state) => state.profile.admin);
   const slotTimes = useSelector((state) => state.slot.slotVal);
+  // console.log(adminData);
+  // console.log(slotTimes);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -69,10 +71,10 @@ const AdminPanel = () => {
           {/* Welcome Card */}
           <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Welcome, {adminData.name}
+              Welcome, {adminData?.name}
             </h2>
 
-            <p className="text-gray-600 text-lg">Email: {adminData.email}</p>
+            <p className="text-gray-600 text-lg">Email: {adminData?.email}</p>
           </div>
 
           {/* Dashboard Cards */}
@@ -191,7 +193,7 @@ const AdminPanel = () => {
                 <p className="font-semibold">to: {slotTimes[0]?.to}</p>
               </div>
               <button
-                onClick={() => dispatch(removeSlot())}
+                onClick={() => dispatch(deleteSlot())}
                 className="bg-blue-500 w-1/4 text-white py-2 mt-4 rounded cursor-pointer"
               >
                 Remove

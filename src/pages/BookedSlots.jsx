@@ -2,30 +2,43 @@ import React, { useEffect, lazy } from "react";
 const UserHeader = lazy(() => import("../components/UserHeader"));
 const Footer = lazy(() => import("../components/Footer"));
 import { Link } from "react-router-dom";
-import { getBookSlot } from "../features/bookSlotSlice";
+import { fetchBookSlots } from "../features/bookSlotSlice";
 import { useDispatch, useSelector } from "react-redux";
-
 
 const BookedSlots = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getBookSlot());
-  }, []);
+    dispatch(fetchBookSlots());
+  }, [dispatch]);
 
-  const orders = useSelector((state) => state.bookSlots.bookSlotData);
+  const { bookSlotData, loading, error } = useSelector(
+    (state) => state.bookSlots,
+  );
+
+  if (loading) {
+    return <div className="text-center mt-10">Loading booked slots...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-10 text-red-500">{error}</div>;
+  }
 
   return (
     <div className="min-h-screen">
       <UserHeader />
       <div className="bg-gray-200 w-auto mx-h-screen">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl text-blue-500 font-semibold p-5">Your Orders</h1>
-          <Link to="/user-home" className="p-5 text-red-500 underline">close</Link>
+          <h1 className="text-2xl text-blue-500 font-semibold p-5">
+            Your Orders
+          </h1>
+          <Link to="/user-home" className="p-5 text-red-500 underline">
+            close
+          </Link>
         </div>
-        {orders.map((order) => (
+        {bookSlotData.map((order) => (
           <div
-            key={order.id}
+            key={order._id}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 m-5 flex justify-between items-center"
           >
             <div>
@@ -41,8 +54,7 @@ const BookedSlots = () => {
                 </p>
 
                 <p>
-                  <span className="font-semibold">Date:</span>{" "}
-                  {order.date}
+                  <span className="font-semibold">Date:</span> {order.date}
                 </p>
 
                 <p>
@@ -57,7 +69,15 @@ const BookedSlots = () => {
                 <div>
                   <span className="font-semibold mb-1">Status:</span>{" "}
                   <span
-                    className={`${order.status === "pending" ? "text-yellow-500" : order.status === "accepted" ? "text-blue-500" : order.status === "complete" ? "text-green-500" : "text-red-500"}`}
+                    className={`${
+                      order.status === "pending"
+                        ? "text-yellow-500"
+                        : order.status === "approved"
+                          ? "text-blue-500"
+                          : order.status === "completed"
+                            ? "text-green-500"
+                            : "text-red-500"
+                    }`}
                   >
                     {order.status}
                   </span>
@@ -79,6 +99,6 @@ const BookedSlots = () => {
       <Footer />
     </div>
   );
-}
+};
 
-export default BookedSlots
+export default BookedSlots;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { Link, useNavigate } from "react-router-dom";
-import { addProducts } from "../features/designSlice";
+import { addProduct } from "../features/designSlice";
 import sweetAlert from "sweetalert2";
 
 const ListServices = () => {
@@ -28,7 +28,7 @@ const ListServices = () => {
 
   const [err, setErr] = useState({});
 
-  const products = ["Welding", "OtherServices"];
+  const products = ["welding", "otherservices"];
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -90,14 +90,14 @@ const ListServices = () => {
     }
   };
 
-  const handleSelect = (url) => {
-    setInput({
-      ...input,
-      selectedImage: url,
-    });
+  // const handleSelect = (url) => {
+  //   setInput({
+  //     ...input,
+  //     selectedImage: url,
+  //   });
 
-    setShowImages(false);
-  };
+  //   setShowImages(false);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,48 +109,56 @@ const ListServices = () => {
       return;
     }
 
-    dispatch(
-      addProducts({
-        category: input.category.toLowerCase(),
+    try {
+      const result = await dispatch(
+        addProduct({
+          category: input.category,
+          productName: input.productname,
+          productData: {
+            url: input.url,
+            description: input.description,
+            uses: input.uses,
+          },
+        }),
+      );
 
-        productName: input.productname,
+      if (addProduct.fulfilled.match(result)) {
+        setInput({
+          id: nanoid(),
+          productname: "",
+          url: "",
+          category: "",
+          description: "",
+          uses: "",
+        });
 
-        productData: {
-          url: input.url,
-          description: input.description,
-          uses: input.uses,
-        },
-      }),
-    );
+        setTouched({
+          productname: false,
+          url: false,
+          category: false,
+          description: false,
+          uses: false,
+        });
 
-    setInput({
-      id: nanoid(),
-      productname: "",
-      url: "",
-      category: "",
-      description: "",
-      uses: "",
-    });
+        setErr({});
 
-    setTouched({
-      productname: false,
-      url: false,
-      category: false,
-      description: false,
-      uses: false,
-    });
+        await sweetAlert.fire({
+          icon: "success",
+          title: "Service Listed!",
+          text: "Your service was listed successfully.",
+          timer: 1800,
+          showConfirmButton: false,
+        });
 
-    setErr({});
-
-    await sweetAlert.fire({
-      icon: "success",
-      title: "service listed",
-      text: "Your service listed successfully.",
-      showConfirmButton: false,
-      timer: 1800,
-    });
-
-    navigate("/admin-home");
+        navigate("/admin-home");
+      }
+    } catch (error) {
+      sweetAlert.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to list service",
+      });
+    }
   };
 
   return (
@@ -165,7 +173,7 @@ const ListServices = () => {
               <h1 className="text-lg sm:text-xl font-semibold">List Service</h1>
 
               <div
-                onClick={() => navigate("/user-home")}
+                onClick={() => navigate("/admin-home")}
                 className="w-6 h-6 flex items-center justify-center cursor-pointer text-sm sm:text-base"
               >
                 ❌
@@ -240,7 +248,7 @@ const ListServices = () => {
 
                 {products.map((item, index) => (
                   <option key={index} value={item}>
-                    {item}
+                    {item === "otherservices" ? "Other Services" : "Welding"}
                   </option>
                 ))}
               </select>

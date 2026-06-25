@@ -1,9 +1,9 @@
-import React, { lazy, useCallback } from "react";
+import React, { lazy, useCallback, useEffect } from "react";
 const UserHeader = lazy(() => import("../components/UserHeader"));
 const Footer = lazy(() => import("../components/Footer"));
 import { useSelector, useDispatch } from "react-redux";
-import { removeProducts } from "../features/designSlice";
-import { data, Link, useNavigate } from "react-router-dom";
+import { fetchDesigns, removeProduct } from "../features/designSlice";
+import { Link, useNavigate } from "react-router-dom";
 import OrderService from "./OrderService";
 import AdminHeader from "../components/AdminHeader";
 
@@ -11,34 +11,27 @@ const YourServices = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const welding = useSelector((state) => state.design.urls.welding || {});
+  useEffect(() => {
+    dispatch(fetchDesigns());
+  }, [dispatch]);
 
-  const otherservices = useSelector(
-    (state) => state.design.urls.otherservices || {},
+  const { designs, loading } = useSelector((state) => state.design);
+
+  if (loading) {
+    return <h2 className="text-center mt-10">Loading...</h2>;
+  }
+
+  const services = designs.filter(
+    (item) => item.category === "welding" || item.category === "otherservices",
   );
 
-  const categories = {
-    welding,
-    otherservices,
-  };
-
-  const services = Object.entries(categories).flatMap(([category, products]) =>
-    Object.entries(products).map(([type, data]) => ({
-      category,
-      type,
-      data,
-    })),
-  );
-
-  const handleEdit = useCallback((category, type, data) => {
+  const handleEdit = (design) => {
     navigate("/edit-listed-product", {
       state: {
-        category,
-        productName: type,
-        productData: data,
-      }
-    })
-  }, [navigate]);
+        design,
+      },
+    });
+  };
 
   return (
     <div className="">
@@ -53,15 +46,15 @@ const YourServices = () => {
       </div>
       <div className="min-h-screen bg-gray-100 py-10 px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map(({ category, type, data }, index) => (
+          {services.map((service) => (
             <div
-              key={index}
+              key={service._id}
               className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition duration-300 group"
             >
               <div className="overflow-hidden">
                 <img
-                  src={data.url}
-                  alt={type}
+                  src={service.productData?.url}
+                  alt={service.productName}
                   loading="lazy"
                   className="w-full h-72 object-cover cursor-pointer group-hover:scale-105 transition duration-300"
                 />
@@ -69,20 +62,20 @@ const YourServices = () => {
 
               <div className="p-5">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                  {type}
+                  {service.productName}
                 </h2>
 
-                <p className="text-gray-600 text-sm mb-2">{data.description}</p>
+                <p className="text-gray-600 text-sm mb-2">{service.productData?.description}</p>
 
                 <p className="text-gray-800 text-sm mb-4 font-semibold">
-                  <span className="font-semibold">Uses:</span> {data.uses}
+                  <span className="font-semibold">Uses:</span> {service.productData?.uses}
                 </p>
               </div>
 
               <div className="flex items-center justify-between p-4">
                 <button
                   className="bg-rose-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-500 transition cursor-pointer"
-                  onClick={() => handleEdit(category, type, data)}
+                  onClick={() => handleEdit(service)}
                 >
                   Edit
                 </button>
@@ -90,12 +83,7 @@ const YourServices = () => {
                 <button
                   className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-500 transition cursor-pointer"
                   onClick={() =>
-                    dispatch(
-                      removeProducts({
-                        category,
-                        productName: type,
-                      }),
-                    )
+                    dispatch(removeProduct(service._id))
                   }
                 >
                   Delete

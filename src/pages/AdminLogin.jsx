@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateAdmin } from "../features/profileSlice";
+import axios from "axios";
 
 const AdminLogin = () => {
+  const dispatch = useDispatch();
+
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -68,7 +73,7 @@ const AdminLogin = () => {
     }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     const validationErrors = validate(input);
@@ -78,17 +83,40 @@ const AdminLogin = () => {
       return;
     }
 
-    const Admin = JSON.parse(localStorage.getItem("admin"));
+    // const Admin = JSON.parse(localStorage.getItem("admin"));
 
-    if (
-      Admin &&
-      Admin.email === input.email &&
-      Admin.password === input.password
-    ) {
-      localStorage.setItem("adminLoggedIn", "true");
-      navigate("/admin-home");
-    } else {
-      alert("Invalid email or password. Please try again.");
+    // if (
+    //   Admin &&
+    //   Admin.email === input.email &&
+    //   Admin.password === input.password
+    // ) {
+    //   localStorage.setItem("adminLoggedIn", "true");
+    //   navigate("/admin-home");
+    // } else {
+    //   alert("Invalid email or password. Please try again.");
+    // }
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/seller/login`,
+        input,
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+
+        localStorage.setItem("tokenA", data.token);
+
+        // save user in redux
+        dispatch(updateAdmin(data.seller));
+
+        // optional
+        // localStorage.setItem("user", JSON.stringify(data.user));
+
+        navigate("/admin-home");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (

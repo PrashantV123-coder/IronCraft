@@ -3,21 +3,24 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAdminProfile } from "../features/profileSlice";
 import logo from "../assets/IronCraftLogo.webp";
 import { useNavigate } from "react-router-dom";
+import { clearAdmin } from "../features/profileSlice";
 
 const AdminHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAdminProfile());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAdminProfile());
+  // }, [dispatch]);
 
-  const admin = useSelector((state) => state.profile.admin);
-  const firstLetter = admin?.name?.charAt(0)?.toUpperCase() || "";
+  const adminData = useSelector((state) => state.profile.admin);
+  const firstLetter = adminData?.name?.charAt(0)?.toUpperCase() || "";
+  // console.log(adminData);
 
   const handleLogout = () => {
-    localStorage.setItem("adminLoggedIn", false);
-    navigate("/admin-login");
+    localStorage.removeItem("tokenA");
+    dispatch(clearAdmin());
+    navigate("/admin-start");
   };
 
   return (
@@ -66,11 +69,11 @@ const AdminHeader = () => {
             {/* Dropdown */}
             <div className="absolute right-0 top-12 min-w-[220px] bg-gray-200 shadow-lg rounded-lg p-4 border hidden group-hover:block">
               <h2 className="font-semibold text-base sm:text-lg">
-                Welcome {admin?.name}
+                Welcome {adminData?.name}
               </h2>
 
               <p className="text-gray-600 text-sm break-all">
-                {admin?.email}
+                {adminData?.email}
               </p>
             </div>
           </div>

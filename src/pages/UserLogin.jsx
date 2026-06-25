@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import sweetAlert from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../features/profileSlice";
 
 const UserLogin = () => {
+  const dispatch = useDispatch();
+
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -79,34 +84,30 @@ const UserLogin = () => {
       return;
     }
 
-    const User = JSON.parse(localStorage.getItem("user"));
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/login`,
+        input,
+      );
 
-    if (
-      User &&
-      User.email === input.email &&
-      User.password === input.password
-    ) {
-      localStorage.setItem("userLoggedIn", "true");
+      if (response.status === 200) {
+        const data = response.data;
 
-      await sweetAlert.fire({
-        icon: "success",
-        title: "Logged in!!",
-        text: "user logged in successfully.",
-        showConfirmButton: false,
-        timer: 1800,
-      });
-      navigate("/user-home");
-    } else {
-      await sweetAlert.fire({
-        icon: "error",
-        title: "Invalid email or password!!",
-        text: "Please try again.",
-        showConfirmButton: false,
-        timer: 1800,
-      });
+        localStorage.setItem("token", data.token);
+
+        // save user in redux
+        dispatch(updateUser(data.user));
+
+        // optional
+        // localStorage.setItem("user", JSON.stringify(data.user));
+
+        navigate("/user-home");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-  
+
   return (
     <div className="bg-gray-300 w-full h-screen flex items-center justify-center">
       <div className="p-6 bg-gray-300 w-full h-110 max-w-md mt-10">
@@ -140,7 +141,9 @@ const UserLogin = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {touched.email && err.email && <p className="text-red-500 text-xs">{err.email}</p>}
+            {touched.email && err.email && (
+              <p className="text-red-500 text-xs">{err.email}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -159,7 +162,9 @@ const UserLogin = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {touched.password && err.password && <p className="text-red-500 text-xs">{err.password}</p>}
+            {touched.password && err.password && (
+              <p className="text-red-500 text-xs">{err.password}</p>
+            )}
           </div>
           <div className="flex items-center justify-between mt-6">
             <button
@@ -175,7 +180,6 @@ const UserLogin = () => {
               Sign up
             </Link>
           </p>
-
         </form>
       </div>
     </div>

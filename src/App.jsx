@@ -39,14 +39,14 @@ const App = () => {
     <div>
       <Suspense fallback={<div>loading...</div>}>
         <Routes>
-          <Route element={<PublicRoutes />}>
+          {/* <Route element={<PublicRoutes />}> */}
             <Route path="/" element={<Start />} />
             <Route path="/user-login" element={<UserLogin />} />
             <Route path="/user-register" element={<UserRegister />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin-register" element={<AdminRegister />} />
             <Route path="/admin-start" element={<AdminStart />} />
-          </Route>
+          {/* </Route> */}
 
           {/* User Protected Routes  */}
           <Route element={<UserProtectedRoutes />}>

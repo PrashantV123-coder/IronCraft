@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { Link, useNavigate } from "react-router-dom";
-import { addProducts } from "../features/designSlice";
+import { addProduct } from "../features/designSlice";
 import sweetAlert from "sweetalert2";
 
 const ListProducts = () => {
@@ -32,7 +32,15 @@ const ListProducts = () => {
   //   (state) => state.design.urls[input.product?.toLowerCase()] || [],
   // );
 
-  const products = ["Shutter", "Gate", "Grill", "Ladder", "Window"];
+  const products = [
+    "gate",
+    "shutter",
+    "grill",
+    "window",
+    "ladder",
+    "welding",
+    "otherservices",
+  ];
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -94,14 +102,14 @@ const ListProducts = () => {
     }
   };
 
-  const handleSelect = (url) => {
-    setInput({
-      ...input,
-      selectedImage: url,
-    });
+  // const handleSelect = (url) => {
+  //   setInput({
+  //     ...input,
+  //     selectedImage: url,
+  //   });
 
-    setShowImages(false);
-  };
+  //   setShowImages(false);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,224 +121,197 @@ const ListProducts = () => {
       return;
     }
 
-    dispatch(
-      addProducts({
-        category: input.category.toLowerCase(),
+    try {
+      const result = await dispatch(
+        addProduct({
+          category: input.category.toLowerCase(),
+          productName: input.productname,
+          productData: {
+            url: input.url,
+            description: input.description,
+            uses: input.uses,
+          },
+        }),
+      );
 
-        productName: input.productname,
+      if (addProduct.fulfilled.match(result)) {
+        await sweetAlert.fire({
+          icon: "success",
+          title: "Product Listed!",
+          text: "Your product listed successfully.",
+          timer: 1800,
+          showConfirmButton: false,
+        });
 
-        productData: {
-          url: input.url,
-          description: input.description,
-          uses: input.uses,
-        },
-      }),
-    );
-
-    setInput({
-      id: nanoid(),
-      productname: "",
-      url: "",
-      category: "",
-      description: "",
-      uses: "",
-    });
-
-    setTouched({
-      productname: false,
-      url: false,
-      category: false,
-      description: false,
-      uses: false,
-    });
-
-    setErr({});
-
-    await sweetAlert.fire({
-      icon: "success",
-      title: "Product Listed!",
-      text: "Your product listed successfully.",
-      showConfirmButton: false,
-      timer: 1800,
-    });
-
-    navigate("/admin-home");
+        navigate("/admin-home");
+      }
+    } catch (error) {
+      sweetAlert.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add product",
+      });
+    }
   };
 
   return (
-  <div className="bg-gray-200 min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10">
-    
-    <div className="bg-white rounded-2xl shadow-xl flex flex-col lg:flex-row overflow-hidden w-full max-w-4xl">
-      
-      <div className="w-full p-4 sm:p-6">
-        <form
-          onSubmit={handleSubmit}
-          className="w-full mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md"
-        >
-          
-          <div className="flex items-center justify-between gap-4 mb-4">
-            <h1 className="text-lg sm:text-xl font-semibold">
-              List Product
-            </h1>
+    <div className="bg-gray-200 min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10">
+      <div className="bg-white rounded-2xl shadow-xl flex flex-col lg:flex-row overflow-hidden w-full max-w-4xl">
+        <div className="w-full p-4 sm:p-6">
+          <form
+            onSubmit={handleSubmit}
+            className="w-full mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-md"
+          >
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <h1 className="text-lg sm:text-xl font-semibold">List Product</h1>
 
-            <div
-              onClick={() => navigate("/user-home")}
-              className="w-6 h-6 flex items-center justify-center cursor-pointer text-sm sm:text-base"
-            >
-              ❌
+              <div
+                onClick={() => navigate("/user-home")}
+                className="w-6 h-6 flex items-center justify-center cursor-pointer text-sm sm:text-base"
+              >
+                ❌
+              </div>
             </div>
-          </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="productname"
-            >
-              Product Name/Design
-            </label>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="productname"
+              >
+                Product Name/Design
+              </label>
 
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="productname"
-              name="productname"
-              value={input.productname}
-              type="text"
-              placeholder="Product Name/Design"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="productname"
+                name="productname"
+                value={input.productname}
+                type="text"
+                placeholder="Product Name/Design"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            {touched.productname && err.productname && (
-              <p className="text-red-500 text-xs">
-                {err.productname}
-              </p>
-            )}
-          </div>
+              {touched.productname && err.productname && (
+                <p className="text-red-500 text-xs">{err.productname}</p>
+              )}
+            </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="url"
-            >
-              Image URL
-            </label>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="url"
+              >
+                Image URL
+              </label>
 
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="url"
-              name="url"
-              value={input.url}
-              type="url"
-              placeholder="Image url"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="url"
+                name="url"
+                value={input.url}
+                type="url"
+                placeholder="Image url"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            {touched.url && err.url && (
-              <p className="text-red-500 text-xs">
-                {err.url}
-              </p>
-            )}
-          </div>
+              {touched.url && err.url && (
+                <p className="text-red-500 text-xs">{err.url}</p>
+              )}
+            </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="category"
-            >
-              Select Category
-            </label>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="category"
+              >
+                Select Category
+              </label>
 
-            <select
-              id="category"
-              name="category"
-              value={input.category}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-            >
-              <option value="">Choose Category</option>
+              <select
+                id="category"
+                name="category"
+                value={input.category}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+              >
+                <option value="">Choose Category</option>
 
-              {products.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
+                {products.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </option>
+                ))}
+              </select>
 
-            {touched.category && err.category && (
-              <p className="text-red-500 text-xs mt-1">
-                {err.category}
-              </p>
-            )}
-          </div>
+              {touched.category && err.category && (
+                <p className="text-red-500 text-xs mt-1">{err.category}</p>
+              )}
+            </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="description"
-            >
-              Product Description
-            </label>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="description"
+              >
+                Product Description
+              </label>
 
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="description"
-              name="description"
-              value={input.description}
-              type="text"
-              placeholder="description"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="description"
+                name="description"
+                value={input.description}
+                type="text"
+                placeholder="description"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            {touched.description && err.description && (
-              <p className="text-red-500 text-xs">
-                {err.description}
-              </p>
-            )}
-          </div>
+              {touched.description && err.description && (
+                <p className="text-red-500 text-xs">{err.description}</p>
+              )}
+            </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="uses"
-            >
-              Uses
-            </label>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="uses"
+              >
+                Uses
+              </label>
 
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="uses"
-              name="uses"
-              value={input.uses}
-              type="text"
-              placeholder="Product uses"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="uses"
+                name="uses"
+                value={input.uses}
+                type="text"
+                placeholder="Product uses"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
 
-            {touched.uses && err.uses && (
-              <p className="text-red-500 text-xs">
-                {err.uses}
-              </p>
-            )}
-          </div>
+              {touched.uses && err.uses && (
+                <p className="text-red-500 text-xs">{err.uses}</p>
+              )}
+            </div>
 
-          <div className="flex items-center justify-center mt-8 sm:mt-10">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline text-sm sm:text-base"
-              type="submit"
-            >
-              Submit
-            </button>
-          </div>
-
-        </form>
+            <div className="flex items-center justify-center mt-8 sm:mt-10">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline text-sm sm:text-base"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default ListProducts;

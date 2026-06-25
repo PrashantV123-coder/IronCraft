@@ -1,30 +1,56 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    user: {},
-    admin: {},
+  user: null,
+  admin: null,
+  loading: false,
 };
 
-export const profileSlice = createSlice({
-    name: "profile",
-    initialState,
-    reducers: {
-        getUserProfile: (state) => {
-            
-            const data = JSON.parse(localStorage.getItem("user"));
+const profileSlice = createSlice({
+  name: "profile",
+  initialState,
+  reducers: {
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
 
-            state.user = data;
-        },
+    updateUser: (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+    },
 
-        getAdminProfile: (state) => {
-            
-            const data = JSON.parse(localStorage.getItem("admin"));
+    updateAdmin: (state, action) => {
+      // console.log(action.payload);
+      state.admin = action.payload;
+    },
 
-            state.admin = data;
-        },
-    }
+    getUserProfile: (state, action) => {
+      state.user = action.payload;
+    },
+
+    getAdminProfile: (state, action) => {
+      state.admin = action.payload;
+    },
+
+    clearUser: (state) => {
+      state.user = null;
+      state.loading = false;
+    },
+
+    clearAdmin: (state) => {
+      state.admin = null;
+    },
+  },
 });
 
-export const {getUserProfile, getAdminProfile} = profileSlice.actions;
+export const {
+  setLoading,
+  updateUser,
+  updateAdmin,
+  getUserProfile,
+  getAdminProfile,
+  clearUser,
+  clearAdmin,
+} = profileSlice.actions;
 
 export default profileSlice.reducer;

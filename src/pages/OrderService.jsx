@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { getOrders, setOrders } from "../features/orderSlice";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { addOrder } from "../features/orderSlice";
+import sweetAlert from "sweetalert2";
 
 const OrderService = () => {
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const OrderService = () => {
   const productFromProps = location.state?.product || "";
 
   const [input, setInput] = useState({
-    id: nanoid(),
     name: "",
     contact: "",
     product: productFromProps,
@@ -35,12 +34,13 @@ const OrderService = () => {
 
   // const [showImages, setShowImages] = useState(false);
 
-
   // const imageUrls = useSelector(
   //   (state) => state.design.urls[input.product?.toLowerCase()] || [],
   // );
 
-  const products = ["Shutter", "Gate", "Grill", "Ladder", "Window"];
+  const products = productFromProps
+  ? [productFromProps]
+  : ["Gate", "Shutter", "Grill", "Window", "Ladder"];
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -83,8 +83,8 @@ const OrderService = () => {
       newErrors.quantity = "Please enter quantity of product";
     }
 
-    if (data.size.length < 5) {
-      newErrors.size = "size must be at least 5 characters";
+    if (!data.size.trim()) {
+      newErrors.size = "Size is required";
     }
 
     return newErrors;
@@ -108,14 +108,14 @@ const OrderService = () => {
     }
   };
 
-  const handleSelect = (url) => {
-    setInput({
-      ...input,
-      selectedImage: url,
-    });
+  // const handleSelect = (url) => {
+  //   setInput({
+  //     ...input,
+  //     selectedImage: url,
+  //   });
 
-    setShowImages(false);
-  };
+  //   setShowImages(false);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -127,39 +127,58 @@ const OrderService = () => {
       return;
     }
 
-    dispatch(setOrders(input));
+    try {
+      const result = await dispatch(
+        addOrder({
+          name: input.name,
+          contact: input.contact,
+          product: input.product,
+          quantity: Number(input.quantity),
+          size: input.size,
+          selectedImage: input.selectedImage,
+          status: "pending",
+        }),
+      );
 
-    setInput({
-      id: nanoid(),
-      name: "",
-      contact: "",
-      product: "",
-      quantity: "",
-      size: "",
-      selectedImage: "",
-      status: "pending",
-    });
+      if (addOrder.fulfilled.match(result)) {
+        setInput({
+          name: "",
+          contact: "",
+          product: "",
+          quantity: "",
+          size: "",
+          selectedImage: "",
+          status: "pending",
+        });
 
-    setTouched({
-      name: false,
-      contact: false,
-      product: false,
-      quantity: false,
-      size: false,
-    });
+        setTouched({
+          name: false,
+          contact: false,
+          product: false,
+          quantity: false,
+          size: false,
+        });
 
-    setErr({});
+        setErr({});
 
-    await sweetAlert.fire({
-      icon: "success",
-      title: "Order Placed!!",
-      text: "Your Order has been placed successfully.",
-      showConfirmButton: false,
-      timer: 1800,
-    });
+        await sweetAlert.fire({
+          icon: "success",
+          title: "Order Placed!",
+          text: "Your order has been placed successfully.",
+          showConfirmButton: false,
+          timer: 1800,
+        });
 
-    navigate("/user-home");
-  }; 
+        navigate("/user-home");
+      }
+    } catch (error) {
+      sweetAlert.fire({
+        icon: "error",
+        title: "Order Failed",
+        text: "Unable to place order.",
+      });
+    }
+  };
 
   return (
     <div className="bg-gray-200 min-h-screen flex items-center justify-center p-10">
@@ -228,7 +247,7 @@ const OrderService = () => {
                 id="contact"
                 name="contact"
                 value={input.contact}
-                type="contact"
+                type="tel"
                 placeholder="Contact"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -279,7 +298,8 @@ const OrderService = () => {
                 id="quantity"
                 name="quantity"
                 value={input.quantity}
-                type="quantity"
+                type="number"
+                min="1"
                 placeholder="Ex. 1, 2,..."
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -301,7 +321,7 @@ const OrderService = () => {
                 id="size"
                 name="size"
                 value={input.size}
-                type="size"
+                type="text"
                 placeholder="Ex. 20x40 ft.."
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -310,7 +330,6 @@ const OrderService = () => {
                 <p className="text-red-500 text-xs">{err.size}</p>
               )}
             </div>
-            
 
             <div className="flex items-center justify-between ml-33">
               <button

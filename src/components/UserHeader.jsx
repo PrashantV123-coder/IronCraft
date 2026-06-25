@@ -3,22 +3,24 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../features/profileSlice";
 import logo from "../assets/IronCraftLogo.webp";
 import { Link, useNavigate } from "react-router-dom";
+import { clearUser } from "../features/profileSlice";
 
 const UserHeader = () => {
   // const [showProfile, setShowProfile] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUserProfile());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getUserProfile());
+  // }, []);
 
   const user = useSelector((state) => state.profile.user);
   const firstLetter = user?.name?.charAt(0)?.toUpperCase() || "";
 
   const handleLogout = () => {
-    localStorage.setItem("userLoggedIn", false);
-    navigate("/user-login");
+    localStorage.removeItem("token");
+    dispatch(clearUser());
+    navigate("/");
   };
 
   return (

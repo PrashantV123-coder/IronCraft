@@ -2,29 +2,41 @@ import React, { useEffect, lazy } from "react";
 const UserHeader = lazy(() => import("../components/UserHeader"));
 const Footer = lazy(() => import("../components/Footer"));
 import { Link } from "react-router-dom";
-import { getOrders } from "../features/orderSlice";
+import { fetchOrders } from "../features/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const MyOrders = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getOrders());
-  }, []);
+    dispatch(fetchOrders());
+  }, [dispatch]);
 
-  const orders = useSelector((state) => state.orders.orderData);
+  const { orderData, loading, error } = useSelector((state) => state.orders);
+
+  if (loading) {
+    return <div className="text-center mt-10">Loading orders...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-10 text-red-500">{error}</div>;
+  }
 
   return (
     <div className="min-h-screen">
       <UserHeader />
       <div className="bg-gray-200 w-auto mx-h-screen">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl text-blue-500 font-semibold p-5">Your Orders</h1>
-          <Link to="/user-home" className="p-5 text-red-500 underline">close</Link>
+          <h1 className="text-2xl text-blue-500 font-semibold p-5">
+            Your Orders
+          </h1>
+          <Link to="/user-home" className="p-5 text-red-500 underline">
+            close
+          </Link>
         </div>
-        {orders.map((order) => (
+        {orderData.map((order) => (
           <div
-            key={order.id}
+            key={order._id}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 m-5 flex justify-between items-center"
           >
             <div>

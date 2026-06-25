@@ -1,11 +1,20 @@
-import React, {lazy} from "react";
+import React, {lazy, useEffect } from "react";
 const UserHeader = lazy(() => import("../components/UserHeader"));
 const Footer = lazy(() => import("../components/Footer"));
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {fetchDesigns} from '../features/designSlice';
 import { Link } from "react-router-dom";
 import OrderService from "./OrderService";
 const LadderProduct = () => {
-  const imageUrls = useSelector((state) => state.design.urls.ladder || {});
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchDesigns());
+  }, [dispatch]);
+
+  const designs = useSelector((state) => state.design.designs);
+  
+  const imageUrls = designs.filter((item) => item.category === "ladder");
 
   return (
     <div className="">
@@ -20,14 +29,14 @@ const LadderProduct = () => {
       </div>
       <div className="min-h-screen bg-gray-100 py-10 px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Object.entries(imageUrls).map(([type, data], index) => (
+          {imageUrls.map((item) => (
             <div
-              key={index}
+              key={item._id}
               className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition duration-300 group"
             >
               <div className="overflow-hidden">
                 <img
-                  src={data.url}
+                  src={item.productData.url}
                   alt="product"
                   loading="lazy"
                   className="w-full h-72 object-cover cursor-pointer group-hover:scale-105 transition duration-300"
@@ -36,19 +45,19 @@ const LadderProduct = () => {
 
               <div className="p-5">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                  {type}
+                  {item.productName}
                 </h2>
 
                 <p className="text-gray-600 text-sm mb-4">
-                  {data.description}
+                  {item.productData.description}
                 </p>
 
                 <div className="flex items-center justify-center">
                   <Link
                     to="/order-service"
                     state={{
-                      selectedImage: data.url,
-                      product: type,
+                      selectedImage: item.productData.url,
+                      product: item.productName,
                     }}
                     className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition"
                   >

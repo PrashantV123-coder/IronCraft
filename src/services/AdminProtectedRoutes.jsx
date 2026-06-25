@@ -1,13 +1,9 @@
-import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AdminProtectedRoutes = () => {
-  const isAdminLoggedIn = JSON.parse(localStorage.getItem("adminLoggedIn"));
+  const token = localStorage.getItem("tokenA");
 
-  if (!isAdminLoggedIn) {
-    return <Navigate to="/admin-login" />;
-  }
-  return <Outlet />;
+  return token ? <Outlet /> : <Navigate to="/admin-login" replace />;
 };
 
 export default AdminProtectedRoutes;

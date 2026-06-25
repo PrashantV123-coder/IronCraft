@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { getBookSlot, setBookSlot } from "../features/bookSlotSlice";
-import { getSlot } from "../features/slotTimingSlice";
+import { addBookSlot } from "../features/bookSlotSlice";
+import { fetchSlot } from "../features/slotTimingSlice";
 import sweetAlert from "sweetalert2";
 
 const BookSlot = () => {
@@ -53,7 +53,7 @@ const BookSlot = () => {
   ];
 
   useEffect(() => {
-    dispatch(getSlot());
+    dispatch(fetchSlot());
   }, []);
 
   const slotTimes = useSelector((state) => state.slot.slotVal);
@@ -149,7 +149,7 @@ const BookSlot = () => {
       return;
     }
 
-    dispatch(setBookSlot(input));
+    dispatch(addBookSlot(input));
 
     setInput({
       id: nanoid(),

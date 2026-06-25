@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateAdmin } from "../features/profileSlice";
+import axios from "axios";
 
 const AdminRegister = () => {
+  const dispatch = useDispatch();
+
   const [input, setInput] = useState({
     name: "",
     email: "",
@@ -76,7 +81,7 @@ const AdminRegister = () => {
     }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const validationErrors = validate(input);
@@ -86,9 +91,35 @@ const AdminRegister = () => {
       return;
     }
 
-    localStorage.setItem("admin", JSON.stringify(input));
-    localStorage.setItem("adminLoggedIn", "true");
-    navigate("/admin-home");
+    // localStorage.setItem("admin", JSON.stringify(input));
+    // localStorage.setItem("adminLoggedIn", "true");
+    // navigate("/admin-home");
+
+    try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_BASE_URL}/seller/register`,
+            input,
+          );
+    
+          if (response.status === 201) {
+            const data = response.data;
+    
+            // if backend sends token
+            if (data.token) {
+              localStorage.setItem("tokenA", data.token);
+            }
+            
+            // console.log(data)
+            // save user in redux
+            dispatch(updateAdmin(data.seller));
+    
+            // localStorage.setItem("user", JSON.stringify(data.user));
+    
+            navigate("/admin-home");
+          }
+        } catch (error) {
+          alert(error.response?.data?.message || "Something went wrong");
+        }
   };
 
   return (

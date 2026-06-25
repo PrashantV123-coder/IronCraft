@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { addProducts } from "../features/designSlice";
+import { editProduct } from "../features/designSlice";
 import sweetAlert from "sweetalert2";
 
 const EditListedProduct = () => {
@@ -10,16 +10,21 @@ const EditListedProduct = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const { category, productName, productData } = location.state || {};
-  console.log(category);
+  const { design } = location.state || {};
+
+  useEffect(() => {
+    if (!design) {
+      navigate("/your-products");
+    }
+  }, [design, navigate]);
 
   const [input, setInput] = useState({
-    id: nanoid(),
-    productname: productName || "",
-    url: productData?.url || "",
-    category: category || "",
-    description: productData?.description || "",
-    uses: productData?.uses || "",
+    id: design?._id || "",
+    productname: design?.productName || "",
+    url: design?.url || "",
+    category: design?.category || "",
+    description: design?.description || "",
+    uses: design?.uses || "",
   });
 
   const [touched, setTouched] = useState({
@@ -31,6 +36,7 @@ const EditListedProduct = () => {
   });
 
   const [err, setErr] = useState({});
+
 
   // const imageUrls = useSelector(
   //   (state) => state.design.urls[input.product?.toLowerCase()] || [],
@@ -125,18 +131,17 @@ const EditListedProduct = () => {
       return;
     }
 
-    dispatch(
-      addProducts({
-        category: input.category.toLowerCase(),
-
-        productName: input.productname,
-
-        productData: {
+    await dispatch(
+      editProduct({
+        id: input.id,
+        updatedData: {
+          productName: input.productname,
           url: input.url,
+          category: input.category.toLowerCase(),
           description: input.description,
           uses: input.uses,
         },
-      }),
+      })
     );
 
     setInput({

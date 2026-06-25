@@ -1,13 +1,21 @@
-import React, {lazy} from "react";
+import React, {lazy, useEffect} from "react";
 const UserHeader = lazy(() => import("../components/UserHeader"));
 const Footer = lazy(() => import("../components/Footer"));
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import {fetchDesigns} from '../features/designSlice';
 import OrderService from "./OrderService";
 
 const WeldingTypes = () => {
-  const weldingTypes = useSelector((state) => state.design.urls.welding || {});
-  //   console.log(weldingTypes);
+  const dispatch = useDispatch();
+  
+    useEffect(() => {
+      dispatch(fetchDesigns());
+    }, [dispatch]);
+  
+    const designs = useSelector((state) => state.design.designs);
+  
+    const imageUrls = designs.filter((item) => item.category === "welding");
 
   return (
     <div className="">
@@ -22,15 +30,15 @@ const WeldingTypes = () => {
       </div>
       <div className="min-h-screen bg-gray-100 py-10 px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Object.entries(weldingTypes).map(([type, data], index) => (
+          {imageUrls.map((item) => (
             <div
-              key={index}
+              key={item._id}
               className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition duration-300 group"
             >
               <div className="overflow-hidden">
                 <img
-                  src={data.url}
-                  alt={type}
+                  src={item.productData.url}
+                  alt={item.productName}
                   loading="lazy"
                   className="w-full h-72 object-cover cursor-pointer group-hover:scale-105 transition duration-300"
                 />
@@ -38,22 +46,22 @@ const WeldingTypes = () => {
 
               <div className="p-5">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                  {type}
+                  {item.productName}
                 </h2>
 
-                <p className="text-gray-600 text-sm mb-2">{data.description}</p>
+                <p className="text-gray-600 text-sm mb-2">{item.productData.description}</p>
 
-                <p className="text-gray-800 text-sm mb-4 font-semibold">
+                {/* <p className="text-gray-800 text-sm mb-4 font-semibold">
                   <span className="font-semibold">Uses:</span> {data.uses}
-                </p>
+                </p> */}
 
                 <div className="flex items-center justify-center">
                   <Link
                     to="/book-slot"
                     state={{
-                      selectedImage: data.url,
-                      description: data.description,
-                      product: type,
+                      selectedImage: item.productData.url,
+                      description: item.productData.description,
+                      product: item.productName,
                     }}
                     className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition"
                   >
