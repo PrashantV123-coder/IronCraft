@@ -93,7 +93,7 @@ const UserRegister = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/users/register`,
+        `https://iron-craft-backend.vercel.app/users/register`,
         input,
       );
 
